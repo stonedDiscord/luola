@@ -260,10 +260,10 @@ SDL_Surface *load_image_rw (SDL_RWops * rw, int allownull,
         }
         SDL_SetColorKey (tmp, SDL_TRUE | SDL_RLEACCEL, ck);
     }
-    if (transparency == T_ALPHA)
-        conv = SDL_DisplayFormatAlpha (tmp);
-    else if(transparency != T_NONE)
-        conv = SDL_DisplayFormat (tmp);
+    //if (transparency == T_ALPHA)
+        //conv = SDL_DisplayFormatAlpha (tmp);
+    //else if(transparency != T_NONE)
+        //conv = SDL_DisplayFormat (tmp);
 
     if (conv == NULL)
         conv = tmp;

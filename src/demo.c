@@ -147,7 +147,7 @@ void fade_to_black (void) {
         SDL_BlitSurface (tmpsurface, NULL, screen, NULL);
         SDL_SetSurfaceAlphaMod (demo_black, FADE_STEP * r);
         SDL_BlitSurface (demo_black, NULL, screen, NULL);
-        SDL_UpdateRect (screen, 0, 0, 0, 0);
+        SDL_RenderPresent (screen);
         delay=SDL_GetTicks()-lasttime;
         if(delay >= GAME_SPEED)
             delay=0;
@@ -177,7 +177,7 @@ void fade_from_black (SDL_Surface * surface) {
         memset (screen->pixels, 0, screen->pitch * screen->h);
         SDL_SetSurfaceAlphaMod (demo_black, FADE_STEP * r);
         SDL_BlitSurface (surface, NULL, screen, NULL);
-        SDL_UpdateRect (screen, 0, 0, 0, 0);
+        SDL_RenderPresent (screen);
         delay=SDL_GetTicks()-lasttime;
         if(delay >= GAME_SPEED)
             delay=0;

@@ -346,7 +346,7 @@ int pause_game (void)
                 msg_rect.y = rect.y + rect.h/2 - pause_msg->h/2;
                 SDL_BlitSurface(pause_msg,NULL,screen,&msg_rect);
             }
-        SDL_UpdateRects (screen, anim_rects, anim_update_rects);
+        SDL_RenderPresent(screen);
         SDL_FreeSurface(pause_msg);
     }
     return !anim_gamepaused;
@@ -396,7 +396,7 @@ void animate_frame (void)
     }
 
     /* Update screen */
-    SDL_UpdateRects (screen, anim_rects, anim_update_rects);
+    SDL_RenderPresent (screen);
 
     /* End the level if there are less than two teams left
      * and endmode is last player wins or if there are less than 10

@@ -138,7 +138,7 @@ static int draw_level(SDL_Surface *surface, struct LevelThumbnail *level,
             alpha = SDL_ALPHA_OPAQUE;
         else
             alpha = visibility/(double)level->thumbnail->w*SDL_ALPHA_OPAQUE;
-        SDL_SetAlpha(level->thumbnail,SDL_TRUE,alpha);
+        SDL_SetSurfaceAlphaMod(level->thumbnail,alpha);
         SDL_BlitSurface(level->thumbnail,&src,surface,&rect);
     } else {
         rect.w = THUMBNAIL_HEIGHT;
@@ -241,7 +241,7 @@ struct LevelFile *select_level(int fade) {
         memset(screen->pixels,0,screen->pitch*screen->h);
         draw_header(screen,roundstr);
         draw_level_bar(screen,levels,0);
-        SDL_UpdateRect(screen,0,0,0,0);
+        SDL_RenderPresent(screen);
     }
 
     /* Level selection event loop */
@@ -266,10 +266,7 @@ struct LevelFile *select_level(int fade) {
                 else if (event.key.keysym.sym == SDLK_ESCAPE)
                     cmd = CANCEL;
                 else if(event.key.keysym.sym == SDLK_RETURN) {
-                    if((event.key.keysym.mod & (KMOD_LALT|KMOD_RALT)))
-                        toggle_fullscreen();
-                    else
-                        cmd = CHOOSE;
+                    cmd = CHOOSE;
                 }
                 break;
             case SDL_JOYBUTTONUP:
@@ -321,8 +318,7 @@ struct LevelFile *select_level(int fade) {
                     animate -= delta;
             }
             draw_level_bar(screen,levels,animate);
-            SDL_UpdateRect(screen,0,screen->h/2 - BAR_HEIGHT/2,
-                    screen->w,BAR_HEIGHT);
+            SDL_RenderPresent(screen);
         }
 
         if (animate) {
@@ -396,7 +392,7 @@ int select_weapon(struct LevelFile *level) {
         if(players[i].state != INACTIVE)
             draw_weapon_bar(screen,i);
 
-    SDL_UpdateRect(screen,0,0,0,0);
+    SDL_RenderPresent(screen);
 
     while(1) {
         SDL_Event event;
@@ -407,10 +403,7 @@ int select_weapon(struct LevelFile *level) {
             if (event.key.keysym.sym == SDLK_F11)
                 screenshot ();
             else if(event.key.keysym.sym == SDLK_RETURN) {
-                if((event.key.keysym.mod & (KMOD_LALT|KMOD_RALT)))
-                    toggle_fullscreen();
-                else
-                    return 1;
+                return 1;
             } else if(event.key.keysym.sym == SDLK_ESCAPE)
                 break;
             else for(i=0;i<4;i++) {
@@ -431,7 +424,7 @@ int select_weapon(struct LevelFile *level) {
                         players[i].standardWeapon = 0;
 
                     rect = draw_weapon_bar(screen,i);
-                    SDL_UpdateRect(screen,rect.x,rect.y,rect.w,rect.h);
+                    SDL_RenderPresent(screen);
                 }
             }
         } else if(event.type == SDL_JOYBUTTONDOWN)

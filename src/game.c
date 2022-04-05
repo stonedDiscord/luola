@@ -275,7 +275,7 @@ void game_statistics (void)
     /* Draw the "press enter to continue" message */
     centered_string (screen, Bigfont, rect.y + rect.h - 30,
                      "Press enter to continue", font_color_white);
-    SDL_UpdateRect (screen, rect.x, rect.y, rect.w, rect.h);
+    SDL_RenderPresent(screen);
     /* Wait for Enter to be pressed */
     wait_for_enter();
 }
@@ -299,7 +299,7 @@ void fill_player_screens (void) {
     } else {
         SDL_FillRect (screen, NULL, 0);
     }
-    SDL_UpdateRect (screen, 0, 0, 0, 0);
+    SDL_RenderPresent(screen);
 }
 
 /* Ingame event loop */
@@ -311,45 +311,6 @@ void game_eventloop (void) {
     while (game_loop) {
         while (SDL_PollEvent (&Event)) {
             switch (Event.type) {
-            case SDL_KEYDOWN:
-                /* Key down event */
-                if (Event.key.keysym.sym == SDLK_ESCAPE) return;
-                else if (Event.key.keysym.sym == SDLK_F1)
-                    radars_visible = !radars_visible;
-                else if (Event.key.keysym.sym == SDLK_F5) {
-                    game_settings.sound_vol -= 10;
-                    if(game_settings.sound_vol<0) game_settings.sound_vol=0;
-                    audio_setsndvolume(game_settings.sound_vol);
-                    playwave(WAV_BLIP);
-                } else if (Event.key.keysym.sym == SDLK_F6) {
-                    game_settings.sound_vol += 10;
-                    if(game_settings.sound_vol>128) game_settings.sound_vol=128;
-                    audio_setsndvolume(game_settings.sound_vol);
-                    playwave(WAV_BLIP);
-                } else if (Event.key.keysym.sym == SDLK_F7) {
-                    game_settings.music_vol -= 10;
-                    if(game_settings.music_vol<0) game_settings.music_vol=0;
-                    audio_setmusvolume(game_settings.music_vol);
-                    playwave(WAV_BLIP2);
-                } else if (Event.key.keysym.sym == SDLK_F8) {
-                    game_settings.music_vol += 10;
-                    if(game_settings.music_vol>128) game_settings.music_vol=128;
-                    audio_setmusvolume(game_settings.music_vol);
-                    playwave(WAV_BLIP2);
-                } else if (Event.key.keysym.sym == SDLK_F11)
-                    screenshot ();
-                else if (Event.key.keysym.sym == SDLK_PAUSE)
-                    is_not_paused = pause_game ();
-
-            case SDL_KEYUP:
-                /* Key up event. Fall through from key down */
-                if (Event.key.keysym.sym == SDLK_RETURN
-                         && Event.type == SDL_KEYUP
-                         && (Event.key.keysym.mod & (KMOD_LALT|KMOD_RALT)))
-                    toggle_fullscreen();
-                else
-                    player_keyhandler (&Event.key, Event.type);
-                break;
             case SDL_JOYBUTTONDOWN:
             case SDL_JOYBUTTONUP:
                 player_joybuttonhandler (&Event.jbutton);
