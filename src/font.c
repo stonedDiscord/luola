@@ -33,7 +33,7 @@
 #include "SFont.h"
 
 #ifdef HAVE_LIBSDL_TTF
-#include "SDL_ttf.h"
+#include <SDL2/SDL_ttf.h>
 #else
 typedef void TTF_Font;
 #endif
@@ -234,7 +234,7 @@ void putstring_direct (SDL_Surface * surface, FontSize size, int x, int y,
             SFont_Write (fontsurface, font.sfont, 0, 0, text,1);
             recolor (fontsurface, color.r / 255.0, color.g / 255.0,
                      color.b / 255.0, 1.0);
-            SDL_SetColorKey (fontsurface, SDL_SRCCOLORKEY, 0);
+            SDL_SetColorKey (fontsurface, SDL_TRUE, 0);
             SDL_BlitSurface (fontsurface, NULL, surface, &rect);
             SDL_FreeSurface (fontsurface);
         }

@@ -25,8 +25,8 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include "SDL.h"
-#include "SDL_endian.h"
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_endian.h>
 
 #include "ldat.h"
 

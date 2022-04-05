@@ -24,7 +24,7 @@
 #ifndef FONT_H
 #define FONT_H
 
-#include "SDL_video.h"
+#include <SDL2/SDL_video.h>
 
 /* Different fonts */
 typedef enum { Bigfont, Smallfont } FontSize;

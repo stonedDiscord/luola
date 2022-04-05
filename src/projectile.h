@@ -23,7 +23,7 @@
 #ifndef PROJECTILE_H
 #define PROJECTILE_H
 
-#include "SDL.h"
+#include <SDL2/SDL.h>
 
 #include "ldat.h"
 #include "physics.h"

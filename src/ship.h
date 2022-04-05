@@ -24,7 +24,7 @@
 #ifndef SHIP_H
 #define SHIP_H
 
-#include "SDL.h"
+#include <SDL2/SDL.h>
 #include "physics.h"
 #include "weapon.h"
 #include "list.h"

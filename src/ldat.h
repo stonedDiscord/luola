@@ -24,7 +24,7 @@
 #ifndef LDAT_H
 #define LDAT_H
 
-#include "SDL_rwops.h"
+#include <SDL2/SDL_rwops.h>
 
 #define LDAT_MAJOR	0x01
 #define LDAT_MINOR	0x00

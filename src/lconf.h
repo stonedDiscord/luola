@@ -24,7 +24,7 @@
 #ifndef LCONF_H
 #define LCONF_H
 
-#include "SDL.h"
+#include <SDL2/SDL.h>
 #include "list.h"
 
 /* Main block */

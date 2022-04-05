@@ -22,7 +22,7 @@
  */
 
 #include <stdlib.h>
-#include "SDL.h"
+#include <SDL2/SDL.h>
 
 #include "fs.h"
 #include "console.h"

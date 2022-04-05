@@ -24,7 +24,7 @@
 #ifndef LEVEL_H
 #define LEVEL_H
 
-#include "SDL.h"
+#include <SDL2/SDL.h>
 
 #include "defines.h"
 #include "game.h"

@@ -24,7 +24,7 @@
 #ifndef LCMAP_H
 #define LCMAP_H
 
-#include "SDL.h"
+#include <SDL2/SDL.h>
 
 extern SDL_Surface *lcmap_to_surface (Uint8 * lcmap, int len);
 extern SDL_Surface *lcmap_to_surface_rw (SDL_RWops * rw);

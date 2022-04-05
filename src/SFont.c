@@ -59,7 +59,7 @@ SFont_Font* SFont_InitFont(SDL_Surface* Surface)
     
     pixel = getpixel(Surface, 0, Surface->h-1);
     SDL_UnlockSurface(Surface);
-    SDL_SetColorKey(Surface, SDL_SRCCOLORKEY, pixel);
+    SDL_SetColorKey(Surface, SDL_TRUE, pixel);
 
     return Font;
 }

@@ -24,7 +24,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
-#include "SDL.h"
+#include <SDL2/SDL.h>
 
 #include "console.h"
 #include "level.h"

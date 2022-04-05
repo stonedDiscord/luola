@@ -77,7 +77,7 @@ void init_demos (void)
         starcolors[r] = map_rgba(r*3, r*3, r*3, 255);
     demo_black = make_surface(screen,0,0);
     if(demo_black) {
-        SDL_SetAlpha (demo_black, SDL_SRCALPHA | SDL_RLEACCEL, FADE_STEP);
+        SDL_SetSurfaceAlphaMod (demo_black, FADE_STEP);
     } else {
         fprintf(stderr,"init_demos(): %s\n",SDL_GetError());
     }
@@ -145,7 +145,7 @@ void fade_to_black (void) {
                 r = FADE_STEPS;
         }
         SDL_BlitSurface (tmpsurface, NULL, screen, NULL);
-        SDL_SetAlpha (demo_black, SDL_SRCALPHA|SDL_RLEACCEL, FADE_STEP * r);
+        SDL_SetSurfaceAlphaMod (demo_black, FADE_STEP * r);
         SDL_BlitSurface (demo_black, NULL, screen, NULL);
         SDL_UpdateRect (screen, 0, 0, 0, 0);
         delay=SDL_GetTicks()-lasttime;
@@ -175,7 +175,7 @@ void fade_from_black (SDL_Surface * surface) {
                 r = FADE_STEPS;
         }
         memset (screen->pixels, 0, screen->pitch * screen->h);
-        SDL_SetAlpha (surface, SDL_SRCALPHA|SDL_RLEACCEL, FADE_STEP * r);
+        SDL_SetSurfaceAlphaMod (demo_black, FADE_STEP * r);
         SDL_BlitSurface (surface, NULL, screen, NULL);
         SDL_UpdateRect (screen, 0, 0, 0, 0);
         delay=SDL_GetTicks()-lasttime;
