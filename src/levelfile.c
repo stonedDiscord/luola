@@ -25,7 +25,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include "SDL.h"
+#include <SDL2/SDL.h>
 
 #include "console.h"
 #include "levelfile.h"
@@ -263,14 +263,8 @@ SDL_Surface *load_level_coll (struct LevelFile * level) {
     return coll;
 }
 
-
-#ifdef WIN32
-#undef PACKAGE_DATA_DIR
 #define PACKAGE_DATA_DIR "data"
 #define HOMELEVELS "home/levels/"
-#else
-#define HOMELEVELS "~/.luola/levels"
-#endif
 
 /* Display this message when no levels are found */
 void no_levels_found (void)

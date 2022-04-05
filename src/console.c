@@ -24,7 +24,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "SDL_endian.h"
+#include <SDL2/SDL_endian.h>
 
 #include "fs.h"
 #include "console.h"
@@ -141,16 +141,19 @@ void init_video () {
             exit(1);
     }
     screen =
-        SDL_SetVideoMode (swidth, sheight, SCREEN_DEPTH,
-                          (luola_options.fullscreen?SDL_FULLSCREEN:0)|SDL_SWSURFACE);
+        SDL_CreateWindow("Luola",
+                          SDL_WINDOWPOS_UNDEFINED,
+                          SDL_WINDOWPOS_UNDEFINED,
+                          swidth, sheight,
+                          SDL_WINDOW_FULLSCREEN | SDL_WINDOW_OPENGL);
+
+
     if (screen == NULL) {
         fprintf (stderr,"Unable to set video mode: %s\n", SDL_GetError ());
         exit (1);
     }
     if (luola_options.hidemouse)
         SDL_ShowCursor (SDL_DISABLE);
-    /* Set window caption */
-    SDL_WM_SetCaption (PACKAGE_STRING, PACKAGE);
     /* Initialize colours */
     col_black = map_rgba (0, 0, 0, 255);
     col_gray = map_rgba (128, 128, 128, 255);
@@ -269,7 +272,7 @@ SDL_Surface *make_surface(SDL_Surface * likethis,int w,int h) {
                                   likethis->format->Bmask,
                                   likethis->format->Amask);
     if (likethis->format->BytesPerPixel == 1) /* Copy the palette */
-        SDL_SetPalette (surface, SDL_LOGPAL,
+        SDL_SetPaletteColors(likethis->format->palette,
                         likethis->format->palette->colors, 0,
                         likethis->format->palette->ncolors);
 
@@ -444,39 +447,6 @@ void wait_for_enter(void) {
     }
 }
 
-/* Toggle between fullscreen and windowed mode */
-void toggle_fullscreen(void) {
-#if (defined(unix) || defined(__unix__) || defined(_AIX) || \
-     defined(__OpenBSD__)) && (!defined(DISABLE_X11) && \
-     !defined(__CYGWIN32__) && !defined(ENABLE_NANOX) && \
-     !defined(__QNXNTO__))
-    /* This is the easy way, but it only works under X11 */
-    SDL_WM_ToggleFullScreen(screen);
-#else
-    int fullscreen = !(screen->flags & SDL_FULLSCREEN);
-    int w=screen->w,h=screen->h;
-    char *pixels;
-    /* The pixel data on screen will be lost, so copy it first */
-    pixels = malloc(screen->h*screen->pitch);
-    memcpy(pixels,screen->pixels,screen->h*screen->pitch);
-
-    /* Create a new screen */
-    SDL_FreeSurface(screen);
-    screen =
-        SDL_SetVideoMode (w, h, SCREEN_DEPTH,
-                          (fullscreen?SDL_FULLSCREEN:0)|SDL_SWSURFACE);
-    if (screen == NULL) {
-        fprintf (stderr,"Unable to set video mode: %s\n", SDL_GetError ());
-        exit (1);
-    }
-
-    /* Copy back the pixel data */
-    memcpy(screen->pixels,pixels,screen->h*screen->pitch);
-    free(pixels);
-    SDL_UpdateRect(screen,0,0,0,0);
-#endif
-}
-
 /* Display an error message */
 void error_screen(const char *title, const char *exitmsg, const char *message[]) {
     SDL_Rect r1, r2;
@@ -549,27 +519,7 @@ void joystick_motion (SDL_JoyAxisEvent * axis, int plrmode) {
         p = 0;
     if (axis->value > 0)
         p++;
-    if (p == 0) {
-        if (plrmode && plr > -1)
-            event.key.keysym.sym = game_settings.controller[plr].keys[0];
-        else
-            event.key.keysym.sym = SDLK_UP;
-    } else if (p == 1) {
-        if (plrmode && plr > -1)
-            event.key.keysym.sym = game_settings.controller[plr].keys[1];
-        else
-            event.key.keysym.sym = SDLK_DOWN;
-    } else if (p == 2) {
-        if (plrmode && plr > -1)
-            event.key.keysym.sym = game_settings.controller[plr].keys[2];
-        else
-            event.key.keysym.sym = SDLK_LEFT;
-    } else {
-        if (plrmode && plr > -1)
-            event.key.keysym.sym = game_settings.controller[plr].keys[3];
-        else
-            event.key.keysym.sym = SDLK_RIGHT;
-    }
+
     event.key.keysym.mod = 0;
     SDL_PushEvent (&event);
 }

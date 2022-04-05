@@ -29,23 +29,18 @@
 #include <sys/types.h>
 #include <errno.h>
 
-#include "SDL.h"
-#include "SDL_image.h"
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 
 #include "console.h"
 #include "fs.h"
 #include "lcmap.h"
 
 /* Paths */
-#ifndef WIN32
-#define LEVEL_PATH "/levels/"
-#define FONT_PATH "/font/"
-#else
 #undef PACKAGE_DATA_DIR
 #define DATA_PATH "data/"
 #define LEVEL_PATH "data/levels/"
 #define FONT_PATH "data/font/"
-#endif
 
 #define HOME_PATH "luola/"
 
@@ -263,7 +258,7 @@ SDL_Surface *load_image_rw (SDL_RWops * rw, int allownull,
         default:
             ck = 0;
         }
-        SDL_SetColorKey (tmp, SDL_SRCCOLORKEY | SDL_RLEACCEL, ck);
+        SDL_SetColorKey (tmp, SDL_TRUE | SDL_RLEACCEL, ck);
     }
     //if (transparency == T_ALPHA)
         //conv = SDL_DisplayFormatAlpha (tmp);
