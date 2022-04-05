@@ -26,7 +26,7 @@
 #include <string.h>
 #include <math.h>
 
-#include "SDL.h"
+#include <SDL2/SDL.h>
 
 #include "fs.h"
 #include "console.h"
@@ -525,43 +525,6 @@ void player_key_update (int plr) {
         }
     } else {
         control_pilot (plr);
-    }
-}
-
-/* Keyboard handling */
-void player_keyhandler (SDL_KeyboardEvent * event, Uint8 type)
-{
-    int p, b;
-    SDLKey key = event->keysym.sym;
-    for (p = 0; p < 4; p++) {   /* Check all 4 players */
-        if (players[p].state==ALIVE&&game_settings.controller[p].number==0) {
-            for (b = 0; b < 6; b++) { /* Each player has 6 buttons */
-                if (game_settings.controller[p].keys[b] == key) {
-                    switch (b) {
-                    case 0:
-                        players[p].controller.axis[0] = (type == SDL_KEYDOWN);
-                        break;
-                    case 1:
-                        players[p].controller.axis[0] = -(type == SDL_KEYDOWN);
-                        break;
-                    case 2:
-                        players[p].controller.axis[1] = (type == SDL_KEYDOWN);
-                        break;
-                    case 3:
-                        players[p].controller.axis[1] = -(type == SDL_KEYDOWN);
-                        break;
-                    case 4:
-                        players[p].controller.weapon1 = (type == SDL_KEYDOWN);
-                        break;
-                    case 5:
-                        players[p].controller.weapon2 = (type == SDL_KEYDOWN);
-                        break;
-                    }
-                    player_key_update (p);
-                    break;
-                }
-            }
-        }
     }
 }
 

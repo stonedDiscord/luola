@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#include "SDL.h"
+#include <SDL2/SDL.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -42,7 +42,7 @@
 /* Internally used globals */
 static struct Menu *intro_menu;
 static SDL_Surface *intr_logo;
-static SDL_Surface *keyb_icon, *pad_icon;
+static SDL_Surface *pad_icon;
 static SDL_Rect intr_logo_rect;
 
 static struct Message {
@@ -51,7 +51,6 @@ static struct Message {
     int x, y, w, h;
     SDL_Surface *text;
     SDL_Rect textrect;
-    SDLKey *setkey;
 } intr_message;
 
 /* Internally used functions */
@@ -117,17 +116,10 @@ static const char *player_key_label(struct MenuItem *item) {
     static char str[64];
     int plr = item->parent->ID;
     if(item->ID==1) {
-        if(*(int *) item->value.value==0)
-            strcpy(str,"Controller: Keyboard");
-        else {
             const char *name = SDL_JoystickName(*(int *) item->value.value-1);
             if(name==NULL)
                 name = "(Joypad not connected)";
             sprintf(str,"Controller: %s",name);
-        }
-    } else if(item->ID>1 && item->ID<8) {
-        sprintf(str, "%s - %s", keys[item->ID-2],
-                SDL_GetKeyName(game_settings.controller[plr].keys[item->ID-2]));
     } else {
         strcpy(str,"???");
     }
@@ -140,7 +132,6 @@ static int set_player_key (MenuCommand cmd, struct MenuItem * item)
     if (cmd != MNU_ENTER)
         return 0;
     intro_message ("Press a key");
-    intr_message.setkey = &game_settings.controller[item->parent->ID].keys[item->ID-2];
     draw_intro_screen ();
     intro_event_loop ();
     return 1;
@@ -598,7 +589,6 @@ void init_intro (LDAT *miscfile) {
     int yoffset=250;
     int optionsy=80;
     /* Load the input device icons */
-    keyb_icon = load_image_ldat (miscfile, 1, T_ALPHA, "KEYBOARD", 0);
     pad_icon = load_image_ldat (miscfile, 1, T_ALPHA, "PAD", 0);
 
     switch(luola_options.videomode) {
@@ -657,7 +647,6 @@ void init_intro (LDAT *miscfile) {
     /* Misc. variable initialization */
     intr_message.show = 0;
     intr_message.text = NULL;
-    intr_message.setkey = NULL;
     intr_message.framecolor = map_rgba(200,80,80,220);
     intr_message.fillcolor = map_rgba(0,0,0,220);
 }
@@ -693,11 +682,6 @@ static int intro_event_loop (void) {
                 command = -1;
                 if (intr_message.show) {
                     intr_message.show = 0;
-                    if (intr_message.setkey) {
-                        *intr_message.setkey = Event.key.keysym.sym;
-                        intr_message.setkey = NULL;
-                        return 0;
-                    }
                     needupdate = 1;
                 } else {
                     if (Event.key.keysym.sym == SDLK_F11)
@@ -789,12 +773,6 @@ int draw_input_icon (int x, int y, MenuAlign align, struct MenuItem * item)
         SDL_BlitSurface (pad_icon, NULL, screen, &rect);
         draw_number(screen, rect.x+rect.w - 2,rect.y + rect.h - NUMBER_H - 2,
                 game_settings.controller[item->ID-1].number,col_red);
-    } else {
-        if (keyb_icon == NULL) return 0;
-        rect.w = keyb_icon->w;
-        if (align == MNU_ALIGN_LEFT)
-            rect.x -= rect.w + 7;
-        SDL_BlitSurface (keyb_icon, NULL, screen, &rect);
     }
     return rect.w + 7;
 }
