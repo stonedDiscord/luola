@@ -70,9 +70,9 @@ void init_pilots (LDAT *playerfile) {
                        tmp->pitch / tmp->format->BytesPerPixel,
                        pilot_sprite[p][r]->pitch /
                        tmp->format->BytesPerPixel);
-            SDL_SetColorKey (pilot_sprite[p][r],
-                             SDL_SRCCOLORKEY | SDL_RLEACCEL,
-                             tmp->format->colorkey);
+            //SDL_SetColorKey (pilot_sprite[p][r],
+            //                 SDL_TRUE | SDL_RLEACCEL,
+            //                 tmp->format->colorkey);
         }
         SDL_FreeSurface (tmp);
     }
