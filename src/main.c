@@ -48,7 +48,7 @@
 /* Show version info */
 static void show_version (void) {
     const SDL_version *sdld;
-    sdld = SDL_Linked_Version ();
+    sdld = 2;
     printf ("%s version %s (Development branch)\n", PACKAGE, VERSION);
     printf ("Compiled with SDL version %d.%d.%d\n", SDL_MAJOR_VERSION,
             SDL_MINOR_VERSION, SDL_PATCHLEVEL);

@@ -223,7 +223,7 @@ SDL_Surface *lcmap_to_surface_rw (SDL_RWops * rw)
         printf ("Error! Couldn't create a surface!\n%s\n", SDL_GetError ());
         return NULL;
     }
-    SDL_SetColors (surface, colors, 0, palent);
+    //SDL_SetColors (surface, colors, 0, palent);
     /* Unpack data */
     data = malloc (unpackedlen);
     dataptr = data;

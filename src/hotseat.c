@@ -218,7 +218,7 @@ static void draw_hotseat_startup (void)
     if (game_settings.mbg_anim)
         draw_starfield ();
     draw_menu (screen, hotseat_startup_menu);
-    SDL_UpdateRect (screen, 0, 0, 0, 0);
+    SDL_RenderPresent(screen);
 }
 
 /* Hotseat game startup eventloop */
@@ -257,10 +257,7 @@ static int hotseat_startup_eventloop (void)
                 else if (Event.key.keysym.sym == SDLK_RIGHT)
                     command = MNU_RIGHT;
                 else if (Event.key.keysym.sym == SDLK_RETURN) {
-                    if((Event.key.keysym.mod & (KMOD_LALT|KMOD_RALT)))
-                        toggle_fullscreen();
-                    else
-                        command = MNU_ENTER;
+                    command = MNU_ENTER;
                 } else if (Event.key.keysym.sym == SDLK_ESCAPE)
                     command = MNU_BACK;
                 if (command >= 0) {

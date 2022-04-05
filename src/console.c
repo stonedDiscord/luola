@@ -433,10 +433,7 @@ void wait_for_enter(void) {
         SDL_WaitEvent(&e);
         if(e.type==SDL_KEYDOWN) {
             if(e.key.keysym.sym == SDLK_RETURN || e.key.keysym.sym == SDLK_KP_ENTER) {
-                if((e.key.keysym.mod & (KMOD_LALT|KMOD_RALT)))
-                    toggle_fullscreen();
-                else
-                    break;
+                break;
             } else if(e.key.keysym.sym == SDLK_F11) {
                 screenshot();
             }
@@ -509,7 +506,7 @@ void error_screen(const char *title, const char *exitmsg, const char *message[])
     
     centered_string(screen,Bigfont, r2.y + r2.h - font_height(Bigfont),
             exitmsg, font_color_red);
-    SDL_UpdateRect (screen, r1.x, r1.y, r1.w, r1.h);
+    SDL_RenderPresent (screen);
     wait_for_enter();
 
 }

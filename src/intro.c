@@ -711,10 +711,7 @@ static int intro_event_loop (void) {
                     else if (Event.key.keysym.sym == SDLK_RIGHT)
                         command = MNU_RIGHT;
                     else if (Event.key.keysym.sym == SDLK_RETURN) {
-                        if((Event.key.keysym.mod & (KMOD_LALT|KMOD_RALT)))
-                            toggle_fullscreen();
-                        else
-                            command = MNU_ENTER;
+                        command = MNU_ENTER;
                     }
                     else if (Event.key.keysym.sym == SDLK_ESCAPE)
                         command = MNU_BACK;
@@ -770,7 +767,7 @@ void draw_intro_screen (void)
     draw_menu (screen, intro_menu);
     if (intr_message.show)
         intro_draw_message ();
-    SDL_UpdateRect (screen, 0, 0, 0, 0);
+    SDL_RenderPresent(screen);
 }
 
 /* Called by a menu callback (this is exported in intro.h as well) */
