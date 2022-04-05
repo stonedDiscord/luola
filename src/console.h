@@ -24,7 +24,7 @@
 #ifndef CONSOLE_H
 #define CONSOLE_H
 
-#include "SDL.h"
+#include <SDL2/SDL.h>
 
 #ifdef HAVE_CONFIG_H
 #include "../config.h"
@@ -32,7 +32,6 @@
 
 /* Player input device */
 struct Controller {
-    SDLKey keys[6];
     SDL_Joystick *device;
     int number;             /* 0=keyboard, rest are joystick number+1 */
 };

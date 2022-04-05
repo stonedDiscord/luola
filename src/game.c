@@ -25,7 +25,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <dirent.h>
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
 #include "startup.h"
 #include "console.h"
@@ -57,35 +57,6 @@ void init_game (LDAT *miscfile)
     gam_filler = load_image_ldat (miscfile, 1, T_OPAQUE, "FILLER", luola_options.videomode);
     if (gam_filler)
         recolor (gam_filler, 0.4, 0.4, 0.4, 1.0);
-
-    /* Set up the default keys */
-    game_settings.controller[0].keys[0] = SDLK_w;
-    game_settings.controller[0].keys[1] = SDLK_s;
-    game_settings.controller[0].keys[2] = SDLK_a;
-    game_settings.controller[0].keys[3] = SDLK_d;
-    game_settings.controller[0].keys[4] = SDLK_LSHIFT;
-    game_settings.controller[0].keys[5] = SDLK_LCTRL;
-
-    game_settings.controller[1].keys[0] = SDLK_UP;
-    game_settings.controller[1].keys[1] = SDLK_DOWN;
-    game_settings.controller[1].keys[2] = SDLK_LEFT;
-    game_settings.controller[1].keys[3] = SDLK_RIGHT;
-    game_settings.controller[1].keys[4] = SDLK_RSHIFT;
-    game_settings.controller[1].keys[5] = SDLK_RCTRL;
-
-    game_settings.controller[2].keys[0] = SDLK_i;
-    game_settings.controller[2].keys[1] = SDLK_k;
-    game_settings.controller[2].keys[2] = SDLK_j;
-    game_settings.controller[2].keys[3] = SDLK_l;
-    game_settings.controller[2].keys[4] = SDLK_y;
-    game_settings.controller[2].keys[5] = SDLK_h;
-
-    game_settings.controller[3].keys[0] = SDLK_KP8;
-    game_settings.controller[3].keys[1] = SDLK_KP5;
-    game_settings.controller[3].keys[2] = SDLK_KP4;
-    game_settings.controller[3].keys[3] = SDLK_KP6;
-    game_settings.controller[3].keys[4] = SDLK_KP1;
-    game_settings.controller[3].keys[5] = SDLK_KP2;
 
     for (p = 0; p < 4; p++) {
         game_settings.controller[p].number = 0;
@@ -425,9 +396,6 @@ void save_game_config (void)
     /* Write keys */
     for (p = 0; p < 4; p++) {
         fprintf (fp, "[keys%d]\n", p + 1);
-        for (k = 0; k < 6; k++) {
-            fprintf (fp, "%d=%d\n", k, game_settings.controller[p].keys[k]);
-        }
     }
     /* Write settings */
     fprintf (fp, "[settings]\n");
@@ -524,10 +492,6 @@ static void parse_keys_block(struct dllist *values,int player) {
         struct KeyValue *pair=values->data;
         int key;
         key=atoi(pair->key);
-        if(key<0 || key>5)
-            printf("No such key (%d)\n",key);
-        else
-            game_settings.controller[player].keys[key] = atoi (pair->value);
         values=values->next;
     }
 }

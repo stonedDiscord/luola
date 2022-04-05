@@ -404,9 +404,7 @@ void hotseat_game (void)
         }
 
         /* Game starts */
-        SDL_EnableKeyRepeat(0,0);
         game_eventloop ();
-        SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY,SDL_DEFAULT_REPEAT_INTERVAL);
 
         /* Game finished, clean up */
         music_stop ();

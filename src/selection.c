@@ -138,7 +138,7 @@ static int draw_level(SDL_Surface *surface, struct LevelThumbnail *level,
             alpha = SDL_ALPHA_OPAQUE;
         else
             alpha = visibility/(double)level->thumbnail->w*SDL_ALPHA_OPAQUE;
-        SDL_SetAlpha(level->thumbnail,SDL_SRCALPHA,alpha);
+        SDL_SetAlpha(level->thumbnail,SDL_TRUE,alpha);
         SDL_BlitSurface(level->thumbnail,&src,surface,&rect);
     } else {
         rect.w = THUMBNAIL_HEIGHT;
@@ -249,7 +249,8 @@ struct LevelFile *select_level(int fade) {
         enum {DO_NOTHING,MOVE_LEFT,MOVE_RIGHT,CHOOSE,CANCEL} cmd = DO_NOTHING;
         if(animate) {
             if(SDL_PollEvent(&event)==0)
-                event.type = SDL_NOEVENT;
+                //event.type = SDL_NOEVENT
+                ;
         } else {
             SDL_WaitEvent(&event);
         }
@@ -415,23 +416,7 @@ int select_weapon(struct LevelFile *level) {
             else for(i=0;i<4;i++) {
                 int update = 0;
                 if(players[i].state == INACTIVE) continue;
-                if(event.key.keysym.sym ==
-                        game_settings.controller[i].keys[2]) {
-                    players[i].specialWeapon--;
-                    update=1;
-                } else if (event.key.keysym.sym ==
-                        game_settings.controller[i].keys[3]) {
-                    players[i].specialWeapon++;
-                    update=1;
-                } else if (event.key.keysym.sym ==
-                           game_settings.controller[i].keys[1]) {
-                    players[i].standardWeapon--;
-                    update=1;
-                } else if (event.key.keysym.sym ==
-                           game_settings.controller[i].keys[0]) {
-                    players[i].standardWeapon++;
-                    update=1;
-                }
+                
                 if(update) {
                     SDL_Rect rect;
                     playwave(WAV_BLIP);

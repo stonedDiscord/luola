@@ -76,7 +76,6 @@ static void show_version (void) {
     exit (0);
 }
 
-/* Do initializations that require datafiles */
 static int load_data(void) {
     LDAT *graphics;
     graphics = ldat_open_file(getfullpath(DATA_DIRECTORY,"gfx.ldat"));
@@ -141,9 +140,6 @@ int main (int argc, char *argv[]) {
 
     /* Set sound effect volume */
     audio_setsndvolume(game_settings.sound_vol);
-
-    /* Enable key repeat (useful in menus. Will be disabled during game) */
-    SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY,SDL_DEFAULT_REPEAT_INTERVAL);
 
     /* Enter game loop */
     while (1) {
